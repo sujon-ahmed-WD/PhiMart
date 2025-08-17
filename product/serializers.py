@@ -4,11 +4,11 @@ from product.models import Category,Product
 
 
 class CategoriesSerializers(serializers.ModelSerializer):
+    product_count=serializers.IntegerField(read_only=True)
     class Meta:
         model= Category
         fields=['id','name','description','product_count']
         
-    product_count=serializers.IntegerField()
 
 
 class ProductSerializers(serializers.ModelSerializer):
@@ -21,7 +21,7 @@ class ProductSerializers(serializers.ModelSerializer):
     def calculate_tex(self,product):
         return round(product.price*Decimal(1.1),2)
     
-    def validate_price(self, price): # field validation
+    def validate_price(self, price): # field validation         
         if price < 0:
             raise serializers.ValidationError('Price could not be negative')
         return price
