@@ -1,17 +1,23 @@
 from django.urls import path,include
-# akna 1st import korbo DefaultRouter
-from rest_framework.routers import DefaultRouter
-from product.views import ProductViewSet,CategoryViewSet
+# from rest_framework.routers import DefaultRouter
+from product.views import ProductViewSet,CategoryViewSet,ReviewSet
+from rest_framework_nested import routers
 
-router=DefaultRouter()
-router.register('products',ProductViewSet)
+router=routers.DefaultRouter()
+router.register('products',ProductViewSet,basename='products')
 router.register('categories',CategoryViewSet)
-# sytanx holo => router.register('kon protocol show kora ta deva ', and konview kaj korsa ta deva )
 
+# product_router=routers.NestedDefaultRouter(router,'products',lookup='product') # 'products' MAIN FIELD   con lookup
+# product_router.register('reviews',ReviewSet,basename='product_view')
+ 
+product_router=routers.NestedDefaultRouter(router,'products',lookup='product') # 
+product_router.register('reviews',ReviewSet,basename='product_review')
 
-urlpatterns = router.urls  # then url setup deva 
+# urlpatterns = router.urls  # then url setup deva 
 
-# urlpatterns=[
-#     path('',include(routers.urls)),
-#     # akna jodi aro url thka amna use kora jaba 
-# ]
+urlpatterns = [
+    path('',include(router.urls)),
+    path('',include(product_router.urls))
+]
+
+ 

@@ -1,6 +1,7 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from decimal import Decimal
-from product.models import Category,Product
+from product.models import Category,Product,Review
 
 
 class CategoriesSerializers(serializers.ModelSerializer):
@@ -28,8 +29,16 @@ class ProductSerializers(serializers.ModelSerializer):
     
     
     #------------ this is update method----------#                           
-    def create(self,validated_data):
-        product= Product(**validated_data)
-        product.other=1
-        product.save()
-        return product 
+    # def create(self,validated_data):
+    #     product= Product(**validated_data)
+    #     product.other=1
+    #     product.save()
+    #     return product 
+class ReviewSerializers(serializers.ModelSerializer):
+        class Meta:
+            model=Review
+            fields=['id','name','description']
+            
+        def create(self, validated_data):
+         product_id = self.context['product_id'] #  Catch korbo context data 
+         return Review.objects.create(product_id=product_id, **validated_data)
