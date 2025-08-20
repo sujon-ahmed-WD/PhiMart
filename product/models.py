@@ -30,7 +30,7 @@ class Review(models.Model):
 
 
 # step in build in api
-  #model
-  # Serializer
- #viewSetup
- #router    
+#model
+# Serializer
+#viewSetup
+#router    

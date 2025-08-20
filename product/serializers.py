@@ -1,4 +1,3 @@
-from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from decimal import Decimal
 from product.models import Category,Product,Review
