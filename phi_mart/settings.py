@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_filters',
     'rest_framework',
+    'djoser',
     'api',
     'order',
     'product',
@@ -75,7 +76,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'phi_mart.wsgi.application'
 
 INTERNAL_IPS = [
-    # ...
+    
     "127.0.0.1",
     # ...
 ]
@@ -137,6 +138,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK ={
     'COERCE_DECIMAL_TO_STRING':False,
-    # 'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.LimitOffsetPagination',
-    # 'PAGE_SIZE':10
+   'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+SIMPLE_JWT = {
+   'AUTH_HEADER_TYPES': ('JWT',),
+}
+
+DJOSER={
+    'SERIALIZERS': {
+            'user_create':'users.serializers.UserCreateSerializer'
+        },
+
 }
