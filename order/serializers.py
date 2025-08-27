@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from order.models import Cart , CartItem
+from order.models import Cart , CartItem, Order, OrderItem
 from product.models import Product
 from product.serializers import ProductSerializers
 
@@ -107,3 +107,10 @@ class CartSerializer(serializers.ModelSerializer):
 
     def get_total_price(self,cart:Cart):
         return sum([item.product.price*item.quantity for item in cart.items.all()]) # ata list summentions korsa 
+    
+    
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Order
+        fields=['id','user','status','total_price','created_at','items']
+        

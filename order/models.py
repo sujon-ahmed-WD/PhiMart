@@ -30,17 +30,23 @@ class CartItem(models.Model):
     
 
 class Order(models.Model):
-    PENDING ='pending'
+    NOT_PAID ='Not paid'
+    READY_TO_SHIP = 'Ready to ship'
     SHIPPED = 'shipped'
     DELIVERED='delivered'
+    CANCELED='canceled'
     STATUS_CHOICES=[
-        (PENDING,'pending'), # bam pas holo database and dan pas holo admin panel
-        (SHIPPED,'shipped'),
-        (DELIVERED,'delivered')
+        (NOT_PAID,'Not paid'), # bam pas holo database and dan pas holo admin panel
+        (SHIPPED,'Shipped'),
+        (READY_TO_SHIP,'Ready to ship'),
+        (CANCELED,'Canceled'),
+        (DELIVERED,'Delivered')
     ]
     user=models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='orders')
-    status=models.CharField(max_length=20, choices=STATUS_CHOICES, default=PENDING)
+    id=models.UUIDField(primary_key=True,default=uuid4,editable=False) #  unique id desa ... 
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    status=models.CharField(max_length=20, choices=STATUS_CHOICES, default=NOT_PAID)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
     
@@ -56,6 +62,7 @@ class OrderItem(models.Model):
     )
     quality=models.PositiveIntegerField()
     price=models.DecimalField(max_digits=10, decimal_places=2)
+    total_price=models.DecimalField(max_digits=12,decimal_places=2)
     
     def __str__(self):
         return f"{self.quality} of {self.product.name} in Order {self.order.id}"
