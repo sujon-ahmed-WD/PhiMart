@@ -1,21 +1,25 @@
 from rest_framework import serializers
 from decimal import Decimal
-from product.models import Category,Product,Review
+from product.models import Category,Product,Review,ProductImage
 from django.contrib.auth import get_user_model
 
 
 class CategoriesSerializers(serializers.ModelSerializer):
-    product_count=serializers.IntegerField(read_only=True)
+    product_count=serializers.IntegerField(read_only=True ,help_text="`-Return the number` ")
     class Meta:
         model= Category
         fields=['id','name','description','product_count']
         
 
-
+class ProductImageSerializers(serializers.ModelSerializer):
+    class Meta:
+        model=ProductImage
+        fields=['id','image']
 class ProductSerializers(serializers.ModelSerializer):
+    images=ProductImageSerializers(many=True,read_only=True) # boji mio
     class Meta:
         model= Product
-        fields=['id','name','description','price','stock','category','price_with_tex']
+        fields=['id','name','description','price','stock','category','price_with_tex','images']
         
     price_with_tex=serializers.SerializerMethodField(method_name='calculate_tex')
     
@@ -28,12 +32,10 @@ class ProductSerializers(serializers.ModelSerializer):
         return price
     
     
-    #------------ this is update method----------#                           
-    # def create(self,validated_data):
-    #     product= Product(**validated_data)
-    #     product.other=1
-    #     product.save()
-    #     return product 
+
+
+        
+    
 class SimpleUserSerializer(serializers.ModelSerializer):
     name=serializers.SerializerMethodField(method_name='get_current_user_name')
     class Meta:

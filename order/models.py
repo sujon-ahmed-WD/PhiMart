@@ -13,7 +13,7 @@ class Cart(models.Model): # add to cart ... ..
         return f"Cart of {self.user.first_name}"
     
 class CartItem(models.Model):
-    cart=models.ForeignKey(Cart,on_delete=models.CASCADE, related_name='items')
+    cart=models.ForeignKey(Cart,on_delete=models.CASCADE, related_name='cartitem')
     product=models.ForeignKey(Product,on_delete=models.CASCADE )
     quantity=models.PositiveIntegerField()
     class Meta:
@@ -51,7 +51,7 @@ class Order(models.Model):
     updated_at=models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return f"Order {self.id} by {self.user.username} - {self.status}"
+        return f"Order {self.id} by {self.user.first_name} - {self.status}"
     
 class OrderItem(models.Model):
     order=models.ForeignKey(
@@ -60,9 +60,9 @@ class OrderItem(models.Model):
     product=models.ForeignKey(
         Product, on_delete=models.CASCADE
     )
-    quality=models.PositiveIntegerField()
+    quantity=models.PositiveIntegerField()
     price=models.DecimalField(max_digits=10, decimal_places=2)
     total_price=models.DecimalField(max_digits=12,decimal_places=2)
     
     def __str__(self):
-        return f"{self.quality} of {self.product.name} in Order {self.order.id}"
+        return f"{self.product.name} of {self.quantity} in Order {self.order.id}"
