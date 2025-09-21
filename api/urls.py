@@ -15,7 +15,6 @@ router.register('orders',OrderViewSet,basename='orders')
 product_router=routers.NestedDefaultRouter(router,'products',lookup='product') # 'products' MAIN FIELD   con lookup
 product_router.register('reviews',ReviewSet,basename='product_review')
 product_router.register('images',ProductImageViewSet,basename='product_image')
-
 cart_router=routers.NestedDefaultRouter(router,'carts',lookup='cart')
 cart_router.register('items',CartItemViewSet,basename='cart-item')
 
