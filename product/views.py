@@ -22,9 +22,9 @@ class ProductViewSet(ModelViewSet):
     serializer_class=ProductSerializers
     
     filter_backends=[DjangoFilterBackend,SearchFilter,OrderingFilter]  # Generic faltering ...........
-    filterset_class=ProductFilter
+    filterset_class = ProductFilter
     pagination_class=DefaultPagination
-    search_fields =['name','description','category__name']
+    search_fields =['name','description']
     ordering_fields=['price','updated_at']
     permission_classes=[IsReviewAuthorOrReadonly]
 @swagger_auto_schema(
