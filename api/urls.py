@@ -25,7 +25,7 @@ variable_name.register('child url',view modda ja file name ja view create korsi 
 """
 
 # urlpatterns = router.urls  # then url setup deva 
-
+# 
 urlpatterns = [
     path('',include(router.urls)),
     path('',include(product_router.urls)),
