@@ -1,5 +1,6 @@
 from datetime import timedelta
 
+from logging import config
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -154,6 +155,9 @@ SIMPLE_JWT = {
 }
 
 DJOSER={
+    # 'EMAIL_FRONTED_PROTOCOL':config('FRONTEND_PROTOCOL'),
+    # 'EMAIL_FRONTEND_DOMAIN':config('FRONTEND_DOMAIN'),
+    # 'EMAIL_FRONTEND_SITE_NAME': 'PhiMart',
     'SERIALIZERS': {
             'user_create':'users.serializers.UserCreateSerializer',
             'current_user': 'users.serializers.UserSerializer',
