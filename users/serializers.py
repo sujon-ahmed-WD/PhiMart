@@ -1,4 +1,4 @@
-from djoser.serializers import UserCreateSerializer as BaseCreateSerializer,UserSerializer as BaseUserSerializer
+from djoser.serializers import UserCreateSerializer as BaseCreateSerializer, UserSerializer as BaseUserSerializer
 
 
 class UserCreateSerializer(BaseCreateSerializer):

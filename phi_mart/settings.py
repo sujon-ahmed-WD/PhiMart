@@ -2,6 +2,7 @@ from datetime import timedelta
 
 from logging import config
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -155,9 +156,9 @@ SIMPLE_JWT = {
 }
 
 DJOSER={
-    # 'EMAIL_FRONTED_PROTOCOL':config('FRONTEND_PROTOCOL'),
-    # 'EMAIL_FRONTEND_DOMAIN':config('FRONTEND_DOMAIN'),
-    # 'EMAIL_FRONTEND_SITE_NAME': 'PhiMart',
+    'EMAIL_FRONTED_PROTOCOL':config('FRONTEND_PROTOCOL'),
+    'EMAIL_FRONTEND_DOMAIN':config('FRONTEND_DOMAIN'),
+    'EMAIL_FRONTEND_SITE_NAME': 'PhiMart',
     'SERIALIZERS': {
             'user_create':'users.serializers.UserCreateSerializer',
             'current_user': 'users.serializers.UserSerializer',
@@ -175,3 +176,6 @@ SWAGGER_SETTINGS = {
         }
     }
 }
+
+BACKEND_URL=config("BACKEND_URL")
+FRONTEND_URL=config("FRONTEND_URL")

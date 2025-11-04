@@ -8,7 +8,7 @@ class OrderService:
     def create_order(user_id, cart_id):
         with transaction.atomic():
             cart = Cart.objects.get(pk=cart_id)
-            cart_items = cart.items.select_related('product').all()
+            cart_items = cart.cart_items.select_related('product').all()
 
             total_price = sum([item.product.price *
                                item.quantity for item in cart_items])

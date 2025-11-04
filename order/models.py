@@ -13,7 +13,7 @@ class Cart(models.Model): # add to cart ... ..
         return f"Cart of {self.user.first_name}"
     
 class CartItem(models.Model):
-    cart=models.ForeignKey(Cart,on_delete=models.CASCADE, related_name='cartitem')
+    cart=models.ForeignKey(Cart,on_delete=models.CASCADE, related_name='cart_items')
     product=models.ForeignKey(Product,on_delete=models.CASCADE )
     quantity=models.PositiveIntegerField()
     class Meta:
