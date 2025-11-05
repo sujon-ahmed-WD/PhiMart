@@ -179,3 +179,8 @@ SWAGGER_SETTINGS = {
 
 BACKEND_URL=config("BACKEND_URL")
 FRONTEND_URL=config("FRONTEND_URL")
+
+# Stripe Setup
+STRIPE_PUBLIC_KEY =config('Publishable_key')
+STRIPE_SECRET_KEY =config('Secret_key')
+STRIPE_WEBHOOK_SECRET=config('STRIPE_WEBHOOK_SECRET')

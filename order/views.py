@@ -2,6 +2,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from rest_framework.viewsets import GenericViewSet,ModelViewSet
 from rest_framework.mixins import CreateModelMixin,RetrieveModelMixin,DestroyModelMixin
+import stripe
 from order.models import Cart,CartItem,Order
 from order.serializers import CartSerializer,CartItemSerializer,AddCartItemSerializer,UpdateCartItemSerializer,OrderSerializer,CreateOrderSerializer,UpdateOrderSerializer
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
@@ -100,6 +101,7 @@ class OrderViewSet(ModelViewSet):
             return Order.objects.prefetch_related('items__product').all()
         return Order.objects.prefetch_related('items__product').filter(user=self.request.user)
 
+# ------------------------SSL Comaraze-----------------------------------------------
 @api_view(['POST'])
 def initiate_payment(request):
     user=request.user
@@ -167,4 +169,75 @@ class HasOrderedProduct(APIView):
         return Response({"hasOrdered": has_ordered})
 
 
-    
+#---------------------Strip-------------------------------
+
+stripe.api_key = main_settings.STRIPE_SECRET_KEY  # তোমার Stripe secret key
+
+# @api_view(['POST'])
+# def initiate_payment(request):
+#     user=request.user
+#     amount=request.data.get("usd")
+#     order_id=request.data.get("orderId")
+#     num_items=request.data.get("numItems")
+@api_view(['POST'])
+def initiate_payment(request):
+    user=request.user
+    amount=request.data.get("amount")
+    order_id=request.data.get("orderId")
+    num_items=request.data.get("numItems")
+
+    # Stripe expects amount in paisa (ছোট একক)
+    stripe_amount = int(float(amount) * 100)  # যেমন 500.50 BDT -> 50050 paisa
+
+    try:
+        checkout_session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[{
+                'price_data': {
+                    'currency': 'usd',
+                    'product_data': {
+                        'name': 'E-commerce Products',
+                    },
+                    'unit_amount': stripe_amount,
+                },
+                'quantity': int(num_items),
+            }],
+         
+         
+     
+            mode='payment',
+            success_url=f"{main_settings.FRONTEND_URL}/dashboard/orders/?session_id={{CHECKOUT_SESSION_ID}}",
+            cancel_url=f"{main_settings.FRONTEND_URL}/dashboard/orders/",
+            metadata={
+                "order_id": order_id,
+                "user_id": user.id
+            }
+        )
+        return Response({"payment_url": checkout_session.url})
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def stripe_webhook(request):
+    payload = request.body
+    sig_header = request.META.get['HTTP_STRIPE_SIGNATURE']
+    endpoint_secret = main_settings.STRIPE_WEBHOOK_SECRET
+
+    try:
+        event = stripe.Webhook.construct_event(payload, sig_header, endpoint_secret)
+    except ValueError:
+        return Response(status=400)
+    except stripe.error.SignatureVerificationError:
+        return Response(status=400)
+
+    if event['type'] == 'checkout.session.completed':
+        session = event['data']['object']
+        order_id = session['metadata']['order_id']
+        try:
+            order = Order.objects.get(id=order_id)
+            order.status = "Ready To Ship"
+            order.save()
+        except Order.DoesNotExist:
+            pass
+
+    return Response(status=200)
