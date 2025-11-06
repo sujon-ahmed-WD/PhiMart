@@ -173,12 +173,6 @@ class HasOrderedProduct(APIView):
 
 stripe.api_key = main_settings.STRIPE_SECRET_KEY  # তোমার Stripe secret key
 
-# @api_view(['POST'])
-# def initiate_payment(request):
-#     user=request.user
-#     amount=request.data.get("usd")
-#     order_id=request.data.get("orderId")
-#     num_items=request.data.get("numItems")
 @api_view(['POST'])
 def initiate_payment(request):
     user=request.user
