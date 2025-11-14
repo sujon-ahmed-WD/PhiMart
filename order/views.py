@@ -170,7 +170,7 @@ class HasOrderedProduct(APIView):
 
 
 #---------------------Strip-------------------------------
-
+import stripe
 stripe.api_key = main_settings.STRIPE_SECRET_KEY  # তোমার Stripe secret key
 
 @api_view(['POST'])
