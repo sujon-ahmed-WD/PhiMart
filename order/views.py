@@ -195,10 +195,7 @@ def initiate_payment(request):
                     'unit_amount': stripe_amount,
                 },
                 'quantity': int(num_items),
-            }],
-         
-         
-     
+            }],     
             mode='payment',
             success_url=f"{main_settings.FRONTEND_URL}/dashboard/orders/?session_id={{CHECKOUT_SESSION_ID}}",
             cancel_url=f"{main_settings.FRONTEND_URL}/dashboard/orders/",
