@@ -184,3 +184,10 @@ FRONTEND_URL=config("FRONTEND_URL")
 STRIPE_PUBLIC_KEY =config('Publishable_key')
 STRIPE_SECRET_KEY =config('Secret_key')
 STRIPE_WEBHOOK_SECRET=config('STRIPE_WEBHOOK_SECRET')
+
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "phimart.onrender.com",   # Render domain
+    ".onrender.com"           # optional wildcard
+]
