@@ -191,3 +191,11 @@ ALLOWED_HOSTS = [
     "phimart.onrender.com",   # Render domain
     ".onrender.com"           # optional wildcard
 ]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
+    "https://phimart.onrender.com",
+]
