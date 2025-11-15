@@ -126,7 +126,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 MEDIA_URL='/media/'
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_ALL_ORIGINS = True
 
 MEDIA_ROOT=BASE_DIR /'media'
 
@@ -185,17 +185,18 @@ STRIPE_PUBLIC_KEY =config('Publishable_key')
 STRIPE_SECRET_KEY =config('Secret_key')
 STRIPE_WEBHOOK_SECRET=config('STRIPE_WEBHOOK_SECRET')
 
-ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
-    "phimart.onrender.com",   # Render domain
-    ".onrender.com"           # optional wildcard
-]
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "https://dainty-sorbet-03d90e.netlify.app",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
+    "https://dainty-sorbet-03d90e.netlify.app",
     "https://phimart.onrender.com",
+]
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "phimart.onrender.com",
 ]
